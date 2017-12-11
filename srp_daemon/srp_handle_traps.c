@@ -496,6 +496,27 @@ static int stop_threads(struct sync_resources *sync_res)
 	return result;
 }
 
+static int poll_cq_once(struct sync_resources *sync_res, struct ibv_cq *cq,
+			struct ibv_wc *wc)
+{
+	int ret;
+	ret = ibv_poll_cq(cq, 1, wc);
+	if (ret < 0) {
+		pr_err("poll CQ failed\n");
+		return ret;
+	}
+
+	if (ret > 0 && wc->status != IBV_WC_SUCCESS) {
+		if (!stop_threads(sync_res))
+			pr_err("got bad completion with status: 0x%x\n",
+			       wc->status);
+		return -ret;
+	}
+
+	return ret;
+}
+
+
 static int poll_cq(struct sync_resources *sync_res, struct ibv_cq *cq,
 		   struct ibv_wc *wc, struct ibv_comp_channel *channel)
 {
@@ -504,6 +525,12 @@ static int poll_cq(struct sync_resources *sync_res, struct ibv_cq *cq,
 	void          *ev_ctx;
 
 	if (channel) {
+		/* Poll CQ once. There may be extra completion that
+		 * were associated to the previous event */
+		ret = poll_cq_once(sync_res, cq, wc);
+		if (ret)
+			return ret;
+
 		if (ibv_get_cq_event(channel, &ev_cq, &ev_ctx)) {
 			pr_err("Failed to get cq_event\n");
 			return -1;
@@ -524,18 +551,7 @@ static int poll_cq(struct sync_resources *sync_res, struct ibv_cq *cq,
 	}
 
 	do {
-		ret = ibv_poll_cq(cq, 1, wc);
-		if (ret < 0) {
-			pr_err("poll CQ failed\n");
-			return ret;
-		}
-
-		if (ret > 0 && wc->status != IBV_WC_SUCCESS) {
-			if (!stop_threads(sync_res))
-				pr_err("got bad completion with status: 0x%x\n",
-				       wc->status);
-			return -ret;
-		}
+		ret = poll_cq_once(sync_res, cq, wc);
 
 		if (ret == 0 && channel) {
 			pr_err("Weird poll returned no cqe after CQ event\n");
