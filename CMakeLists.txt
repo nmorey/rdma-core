@@ -144,6 +144,7 @@ include(RDMA_DoFixup)
 include(publish_headers)
 include(rdma_functions)
 include(rdma_man)
+include(SSEFlags)
 
 if (NOT DEFINED ENABLE_STATIC)
   set(ENABLE_STATIC "OFF" CACHE BOOL "Produce static linking libraries as well as shared libraries.")
