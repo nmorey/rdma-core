@@ -327,6 +327,9 @@ on those changes.
 
 %prep
 %setup -q -n  %{name}-%{version}%{git_ver}
+date
+date -u
+ls -alF %{S:0} $(readlink -f %{S:0})
 
 %build
 
