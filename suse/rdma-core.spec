@@ -237,6 +237,8 @@ This package contains the mlx5 runtime library.
 Summary:        Examples for the libibverbs library
 Group:          Productivity/Networking/Other
 Requires:       libibverbs%{?_isa} = %{version}
+Obsoletes:      libibverbs-runtime < %{version}
+Provides:       libibverbs-runtime = %{version}
 
 %description -n libibverbs-utils
 Useful libibverbs example programs such as ibv_devinfo, which
@@ -249,6 +251,9 @@ Group:          Productivity/Networking/Other
 Requires:       %{name}%{?_isa} = %{version}
 Obsoletes:      libibacmp1 < %{version}
 Provides:       libibacmp1 = %{version}
+# Mark a file conflict with ibacm-devel from a pre rdma-core era
+# This makes sure zypper uses the right install order when updating from SLE12 <= SP2
+Conflicts:      ibacm-devel < 1.2
 
 %description -n ibacm
 The ibacm daemon helps reduce the load of managing path record lookups on
