@@ -1,5 +1,6 @@
 publish_internal_headers(rdma
   rdma/bnxt_re-abi.h
+  rdma/cxgb3-abi.h
   rdma/cxgb4-abi.h
   rdma/efa-abi.h
   rdma/hns-abi.h
@@ -14,6 +15,7 @@ publish_internal_headers(rdma
   rdma/mlx5_user_ioctl_cmds.h
   rdma/mlx5_user_ioctl_verbs.h
   rdma/mthca-abi.h
+  rdma/nes-abi.h
   rdma/ocrdma-abi.h
   rdma/qedr-abi.h
   rdma/rdma_netlink.h
@@ -58,6 +60,7 @@ endfunction()
 # Transform the kernel ABIs used by the providers
 rdma_kernel_provider_abi(
   rdma/bnxt_re-abi.h
+  rdma/cxgb3-abi.h
   rdma/cxgb4-abi.h
   rdma/efa-abi.h
   rdma/hns-abi.h
@@ -66,6 +69,7 @@ rdma_kernel_provider_abi(
   rdma/mlx4-abi.h
   rdma/mlx5-abi.h
   rdma/mthca-abi.h
+  rdma/nes-abi.h
   rdma/ocrdma-abi.h
   rdma/qedr-abi.h
   rdma/rdma_user_rxe.h
