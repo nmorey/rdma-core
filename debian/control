@@ -91,6 +91,7 @@ Description: User space provider drivers for libibverbs
  This package contains the user space verbs drivers:
  .
   - bnxt_re: Broadcom NetXtreme-E RoCE HCAs
+  - cxgb3: Chelsio T3 iWARP HCAs
   - cxgb4: Chelsio T4 iWARP HCAs
   - efa: Amazon Elastic Fabric Adapter
   - hfi1verbs: Intel Omni-Path HFI
