@@ -163,6 +163,8 @@ Provides: libmlx5 = %{version}-%{release}
 Obsoletes: libmlx5 < %{version}-%{release}
 Provides: libmthca = %{version}-%{release}
 Obsoletes: libmthca < %{version}-%{release}
+Provides: libnes = %{version}-%{release}
+Obsoletes: libnes < %{version}-%{release}
 Provides: libocrdma = %{version}-%{release}
 Obsoletes: libocrdma < %{version}-%{release}
 Provides: librxe = %{version}-%{release}
@@ -186,6 +188,7 @@ Device-specific plug-in ibverbs userspace drivers are included:
 - libmlx4: Mellanox ConnectX-3 InfiniBand HCA
 - libmlx5: Mellanox Connect-IB/X-4+ InfiniBand HCA
 - libmthca: Mellanox InfiniBand HCA
+- libnes: NetEffect RNIC
 - libocrdma: Emulex OneConnect RDMA/RoCE Device
 - libqedr: QLogic QL4xxx RoCE HCA
 - librxe: A software implementation of the RoCE protocol

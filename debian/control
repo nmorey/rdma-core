@@ -100,6 +100,7 @@ Description: User space provider drivers for libibverbs
   - mlx4: Mellanox ConnectX-3 InfiniBand HCAs
   - mlx5: Mellanox Connect-IB/X-4+ InfiniBand HCAs
   - mthca: Mellanox InfiniBand HCAs
+  - nes: Intel NetEffect NE020-based iWARP adapters
   - ocrdma: Emulex OneConnect RDMA/RoCE device
   - qedr: QLogic QL4xxx RoCE HCAs
   - rxe: A software implementation of the RoCE protocol
