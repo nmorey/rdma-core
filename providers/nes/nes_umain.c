@@ -63,6 +63,8 @@ static const struct verbs_match_ent hca_table[] = {
 	{},
 };
 
+static void nes_ufree_context(struct ibv_context *ibctx);
+
 static const struct verbs_context_ops nes_uctx_ops = {
 	.query_device = nes_uquery_device,
 	.query_port = nes_uquery_port,
@@ -86,7 +88,9 @@ static const struct verbs_context_ops nes_uctx_ops = {
 	.destroy_ah = nes_udestroy_ah,
 	.attach_mcast = nes_uattach_mcast,
 	.detach_mcast = nes_udetach_mcast,
-	.async_event = nes_async_event
+	.async_event = nes_async_event,
+	.free_context = nes_ufree_context,
+
 };
 
 static const struct verbs_context_ops nes_uctx_no_db_ops = {
@@ -215,6 +219,5 @@ static const struct verbs_device_ops nes_udev_ops = {
 	.alloc_device = nes_device_alloc,
 	.uninit_device = nes_uninit_device,
 	.alloc_context = nes_ualloc_context,
-	.free_context = nes_ufree_context,
 };
 PROVIDER_DRIVER(nes, nes_udev_ops);
