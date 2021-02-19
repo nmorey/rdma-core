@@ -74,23 +74,28 @@ struct nes_ud_recv_wr {
 /**
  * nes_uquery_device
  */
-int nes_uquery_device(struct ibv_context *context, struct ibv_device_attr *attr)
+int nes_uquery_device(struct ibv_context *context,
+		      const struct ibv_query_device_ex_input *input,
+		      struct ibv_device_attr_ex *attr, size_t attr_size)
 {
-	struct ibv_query_device cmd;
-	uint64_t nes_fw_ver;
+	struct ib_uverbs_ex_query_device_resp resp;
+	size_t resp_size = sizeof(resp);
+	uint64_t raw_fw_ver;
+	unsigned major, minor, sub_minor;
 	int ret;
-	unsigned int minor, major;
 
-	ret = ibv_cmd_query_device(context, attr, &nes_fw_ver,
-					&cmd, sizeof cmd);
+	ret = ibv_cmd_query_device_any(context, input, attr, attr_size, &resp,
+				       &resp_size);
 	if (ret)
 		return ret;
 
-	major = (nes_fw_ver >> 16) & 0xffff;
-	minor = nes_fw_ver & 0xffff;
+	raw_fw_ver = resp.base.fw_ver;
+	major = (raw_fw_ver >> 32) & 0xffff;
+	minor = (raw_fw_ver >> 16) & 0xffff;
+	sub_minor = raw_fw_ver & 0xffff;
 
-	snprintf(attr->fw_ver, sizeof attr->fw_ver,
-		"%d.%d", major, minor);
+	snprintf(attr->orig_attr.fw_ver, sizeof(attr->orig_attr.fw_ver),
+		 "%d.%d.%d", major, minor, sub_minor);
 
 	return 0;
 }

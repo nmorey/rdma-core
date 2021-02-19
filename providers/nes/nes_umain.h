@@ -346,7 +346,9 @@ static inline struct nes_uqp *to_nes_uqp(struct ibv_qp *ibqp)
 
 
 /* nes_uverbs.c */
-int nes_uquery_device(struct ibv_context *, struct ibv_device_attr *);
+int nes_uquery_device(struct ibv_context *, 
+		      const struct ibv_query_device_ex_input *,
+		      struct ibv_device_attr_ex *, size_t);
 int nes_uquery_port(struct ibv_context *, uint8_t, struct ibv_port_attr *);
 struct ibv_pd *nes_ualloc_pd(struct ibv_context *);
 int nes_ufree_pd(struct ibv_pd *);

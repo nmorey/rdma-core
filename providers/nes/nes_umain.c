@@ -66,7 +66,7 @@ static const struct verbs_match_ent hca_table[] = {
 static void nes_ufree_context(struct ibv_context *ibctx);
 
 static const struct verbs_context_ops nes_uctx_ops = {
-	.query_device = nes_uquery_device,
+	.query_device_ex = nes_uquery_device,
 	.query_port = nes_uquery_port,
 	.alloc_pd = nes_ualloc_pd,
 	.dealloc_pd = nes_ufree_pd,
