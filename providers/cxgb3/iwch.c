@@ -78,7 +78,7 @@ static const struct verbs_match_ent hca_table[] = {
 static void iwch_free_context(struct ibv_context *ibctx);
 
 static const struct verbs_context_ops iwch_ctx_common_ops = {
-	.query_device = iwch_query_device,
+	.query_device_ex = iwch_query_device,
 	.query_port = iwch_query_port,
 	.alloc_pd = iwch_alloc_pd,
 	.dealloc_pd = iwch_free_pd,
@@ -178,6 +178,19 @@ static void iwch_uninit_device(struct verbs_device *verbs_device)
 	free(dev);
 }
 
+static int _ibv_get_fw_ver(char *value, size_t len, struct verbs_sysfs_dev *sysfs_dev)
+{
+
+	/*
+	 * NOTE: This can only be called by a driver inside the dev_list_lock,
+	 * ie during context setup or otherwise.
+	 */
+	assert(pthread_mutex_trylock(&dev_list_lock) != 0);
+
+	return (ibv_read_ibdev_sysfs_file(value, len, sysfs_dev, "fw_ver") <= 0);
+}
+
+
 static bool iwch_device_match(struct verbs_sysfs_dev *sysfs_dev)
 {
 	char value[32], *cp;
@@ -191,7 +204,7 @@ static bool iwch_device_match(struct verbs_sysfs_dev *sysfs_dev)
 	 * Verify that the firmware major number matches.  Major number
 	 * mismatches are fatal.  Minor number mismatches are tolerated.
 	 */
-	if (ibv_get_fw_ver(value, sizeof(value), sysfs_dev))
+	if (_ibv_get_fw_ver(value, sizeof(value), sysfs_dev))
 		return false;
 
 	cp = strtok(value+1, ".");
