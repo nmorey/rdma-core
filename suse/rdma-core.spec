@@ -198,7 +198,8 @@ Requires:       %{efa_lname} = %{version}-%{release}
 Requires:       %{mlx4_lname} = %{version}-%{release}
 Requires:       %{mlx5_lname} = %{version}-%{release}
 %endif
-# Recommended packages for rxe
+# Recommended packages for rxe_cfg
+Recommends:     ethtool
 Recommends:     iproute2
 
 %description -n libibverbs
@@ -654,7 +655,9 @@ rm -rf %{buildroot}/%{_sbindir}/srp_daemon.sh
 %doc %{_docdir}/%{name}-%{version}/libibverbs.md
 %doc %{_docdir}/%{name}-%{version}/rxe.md
 %doc %{_docdir}/%{name}-%{version}/tag_matching.md
+%{_bindir}/rxe_cfg
 %{_mandir}/man7/rxe*
+%{_mandir}/man8/rxe*
 
 %files -n libibnetdisc%{ibnetdisc_major}
 %defattr(-, root, root)
