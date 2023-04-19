@@ -17,6 +17,7 @@ is included:
  - bnxt_re.ko
  - efa.ko
  - erdma.ko
+ - iw_cxgb3.ko
  - iw_cxgb4.ko
  - hfi1.ko
  - hns-roce.ko
